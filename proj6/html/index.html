@@ -1,0 +1,238 @@
+<html>
+<head>
+<title>Deep Learning Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 1160px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+table td img {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<div class="container">
+
+<h2>Project 6: Deep Learning</h2>
+
+<h2>Answered Questions</h2>
+
+<h3>Question 1</h3>
+<p>Photographs of the same scene with high and low contrast will output different values across the NN layers. Subtracting the mean image from each image improves contrast invariance. Normalizing zero-centers the data thus the relative contrasts are closer together.</p>
+
+<h3>Question 2</h3>
+<p>Pooling takes the highest value within a window and updates the center pixel to that value. A pooling operation with a stride greater than 1 will also downsample the image. Max pooling and downsampling reduces the dimensionality of the image. Downsampling combats overfitting by reducing the input data and thus the number of parameters in the subsequent layers.</p>
+
+<h3>Question 3</h3>
+<p>Sigmoid activation functions can "die" when input with very high or very low values. The derivatives at these extremes is approximately zero, thus backpropagation will do little to update the weights of the previous layers.</p>
+<p>Additionally, sigmoid activation functions are nonlinear thus operations on this layer can be computationally expensive. ReLU activation functions are linear, and their derivatives are easy to compute.</p>
+<p>ReLU perceptrons can also "die" when input with negative values or zero. The derivative of the dead ReLU perceptron is  zero thus the perceptron and the weights from previous layers may not update during backpropagation.</p>
+
+<h3>Part 1</h3>
+
+<h4>Jittering</h4>
+<p>In getBatch() I generate a random number between 10 and 30 of images to flip. I generate random indices and flip those images. Those images are returned in the batch. Jittering increases the shallow  network performance ~10%.</p>
+<h4>Normalization</h4>
+<p>In proj6_part1_setup_data.m I postprocess the images by subtracting the mean image from  all the training and validation images. Normalization improves performance ~15%.</p>
+<h4>Regularization</h4>
+<p>I add a dropout layer, with a dropout rate of 0.5, before the final convolution. The dropout layer improves performance ~10%.</p>
+<h4>Shallow Network Performance</h4>
+<p>Training the shallow network with 30 epochs and a learning rate of 0.0001 achieves a  ~65-70% accuracy.</p>
+<h4>Deeper Network Structure</h4>
+
+<ol>
+<li>Convolution</li>
+<ul>
+	<li>Weight Size: 9x9x1x10</li>
+	<li>Stride: 1</li>
+	<li>Pad: 0</li>
+</ul>
+<li>Max Pool</li>
+<ul>
+	<li>Window Size: 4x4</li>
+	<li>Stride: 4</li>
+</ul>
+<li>ReLU</li>
+
+<li>Dropout</li>
+<ul>
+	<li>Dropout Rate: 0.5</li>
+</ul>
+<li>Convolution</li>
+<ul>
+	<li>Weight Size: 5x5x1x10</li>
+	<li>Stride: 1</li>
+	<li>Pad: 0</li>
+</ul>
+<li>Max Pool</li>
+<ul>
+	<li>Window Size: 2x2</li>
+	<li>Stride: 2</li>
+</ul>
+<li>ReLU</li>
+
+<li>Dropout</li>
+<ul>
+	<li>Dropout Rate: 0.5</li>
+</ul>
+<li>Convolution</li>
+<ul>
+	<li>Filter Size: 5x5x10x15</li>
+	<li>Stride: 1</li>
+	<li>Pad: 0</li>
+</ul>
+<li>Softmax Loss</li>
+</ol>
+
+<h4>Deeper Network Performance</h4>
+<center>
+<img src="deep_part1_filters.jpg" width="45%">
+<img src="deep_part1.jpg" width="45%">
+</center>
+<p> An initial run with a learning rate of 0.001 produces erratic behavior towards the end of training. On my second run I implemented a logarithmic training rate from 0.001 to 0.00001 over 100 epochs. The figures above show the filters and the error convergence for the second run. This implementation removes the noise, but the accuracy still converges to ~45%.</p>
+
+<h3>Part 2</h3>
+<h4>proj6_part2_setup_data.m</h4>
+<p>In proj6_part2_setup_data.m I resize the images to 224x224 and repeat the grayscale images across 3 channels. I postprocess the data by subtracting the average image from the data images.</p>
+<h4>proj6_part2_cnn_init.m</h4>
+<p>In proj6_part2_cnn_init.m I overwrite the default settings of the network. I replace the fc8 parameters, with weights of size 1x1x4096x15, stride 1, and pad 0. I change the final layer to a softmax loss function. Finally, I add a dropout layer with a dropout rate of 0.5 before fc8.</p>
+<h4>Results</h4>
+<p>After 10 epochs the accuracy converges to ~87%.</p
+<center>
+<img src="part2_filters.jpg" width="45%">
+<img src="part2_error.jpg" width="45%">
+</center>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

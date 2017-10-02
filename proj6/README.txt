@@ -1,0 +1,1 @@
+When run on my home computer I had the imagenet-vgg-f.mat file in the code folder. Additionally I kept the matconvnet-1.0-beta16 folder in the proj6 folder.

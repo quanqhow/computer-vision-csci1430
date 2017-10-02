@@ -1,0 +1,276 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<!-- Don't include your name or obviously identifiable information! We will practice anonymous TA grading. -->
+<div class="container">
+
+<h2>Project 3: Camera Calibration and Fundamental Matrix Estimation</h2>
+
+<h2>Answered Questions</h2>
+
+<h4>
+1. Describe the difference between the essential and fundamental matrices
+</h4>
+
+<p>
+The fundamental matrix relates two points on two images of the same scene, and it has 7 degrees of freedom. The essential matrix is a specialized form of the fundamental matrix that is also used similarly to relate two points. In the essential matrix the cameras are calibrated, and thus there are only 5 degrees of freedom.
+</p>
+
+<h4>
+2. What does it mean when your epipolar lines: a) cross, b) radiate out of a point on the image plane, c) converge to a point outside of the image plane
+</h4>
+
+<p>
+a) Epipolar lines will only cross at the epipole. This location corresponds to the projection of Camera Two's location onto the image plane of Camera One.
+</p>
+
+<p>
+b) Radiating epipolar lines indicate that the cameras are positioned above each other or the other camera location is in view of the camera.
+</p>
+
+<p>
+c) The second camera is out of view of the first camera.
+</p>
+
+<h4>
+3. What is rectification, and why do we rectify image pairs?
+</h4>
+
+<p>
+Rectification is an transformation such that the epipolar lines on the transformed image are parallel. Rectification is performed to simplify the search process: one only has to search along horizontal lines. Rectification transforms a 2D search problem into a 1D search problem.
+</p>
+
+
+<h2>Implementation</h2>
+
+<h4> 
+proj3_part1.m
+</h4>
+
+<p>
+My proj3_part1.m code calls calculate_projection_matrix.m to find a projection matrix given corresponding 2D and 3D points. My calculate_projection_matrix.m code uses the MATLAB operator "\" to find the least squares estimate of the projection matrix.
+</p>
+
+<p>
+My program returns a projection matrix:
+</p>
+<p>
+[0.7679, -0.4938, -0.0234, 0.0067]
+</p>
+<p>
+[-0.0852, -0.0915, -0.9065, -0.0878]
+</p>
+<p>
+[0.1827, -0.2988, -0.0742, 1.0000]
+</p>
+
+<p>
+This projection matrix is a scalar multiple of the provided best estimate.
+Additionally, my code estimates a camera center at (-1.5126, -2.3517, 0.2827).
+</p>
+
+<h4> 
+proj3_part2.m
+</h4>
+
+<p>
+My proj3_part2.m code calculates the fundamental matrix of a given pair of correspondences using single value decomposition. My algorithm reduces the fundamental matrix estimation to rank 2 by setting the smallest singular value to zero and reconstructing the matrix.
+</p>
+
+<p>
+The two figures below show the epipolar lines drawn on the given scene. My program estimates a Fundamental matrix:
+</p>
+
+<p>
+[-0.0000, 0.0000, -0.0019]
+</p>
+<p>
+[0.0000, 0.0000, 0.0172]
+</p>
+<p>
+[-0.0009, -0.0264, -0.9995]
+</p>
+
+<img src="view1.jpg" width="40%"/>
+<img src="view2.jpg" width="40%"/>
+
+
+<h4> 
+proj3_part3.m
+</h4>
+
+<p>
+My proj3_part3.m program uses RANSAC to estimate a fundamental matrix given two sets of matched SIFT features. 
+</p>
+
+<p>RANSAC Algorithm</p>
+
+<ol>
+<li>Randomly select a number, n, between 10 and 15</li>
+<li>Randomly sample n matched features</li>
+<li>Compute the Fundamental matrix using these features</li>
+<li>Compute x'*F*x_transpose for every set of correspondences</li>
+<li>Count inliers as matched points with a distance metric < 0.000001</li>
+<li>Repeat 5000 times</li>
+<li>Return the Fundamental matrix with the most number of inliers</li>
+</ol>
+
+<h4>Results</h4>
+
+<img src="MR1.jpg" width="50%"/>
+<img src="MR2.jpg" width="50%"/>
+<img src="MR_inliers.jpg" width="50%"/>
+
+<p>
+For the Mount Rushmore pair I increased the confidence in the sift_wrapper.m to 3 in order to operate on more confident matches. I achieved consistent results running RANSAC on the Mount Rushmore photos. Of 241 potential matches I achieved 241 inliers using RANSAC. However, the points on the far right of the second image are not intersected by epipolar lines. This suggests that the Fundamental matrix may actually be incorrect, but by mathematical coincidence achieves a near zero value for the distance metric on these points.
+</p>
+
+<div style="clear:both">
+
+<img src="ND_good1.jpg" width="50%"/>
+<img src="ND_good2.jpg" width="50%"/>
+<img src="ND_inliers.jpg" width="50%"/>
+<img src="ND_bad1.jpg" width="50%"/>
+<img src="ND_bad2.jpg" width="50%"/>
+
+<p>
+For the Notre Dame pair I again increased the confidence in the sift_wrapper.m to 3. I achieved extremely inconsistent results running RANSAC on the Mount Rushmore photos. Of 510 potential matches I would often achieve 508-510 inliers using RANSAC. However, the epipolar lines would indicate clearly impossible relationships between images. Nonetheless, I was sometimes able to obtain reasonable results.
+</p>
+
+<img src="EG_good1.jpg" width="50%"/>
+<img src="EG_good2.jpg" width="50%"/>
+<img src="EG_inliers.jpg" width="50%"/>
+
+<p>
+For the Episcopal Gaudi pair I increased the confidence even further to 4.5. There were only 43 matches that passed this confidence test. I achieved somewhat consistent results running RANSAC on the Episcopal Guadi photos, and I would always achieve all 43 inliers. The epipolar lines imply that both camera locations are located to the right each other, which is obviously impossible. Nonetheless, the epipolar lines intersect the points well and provide accurate matches.
+</p>
+
+</body>
+</html>

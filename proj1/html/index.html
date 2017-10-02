@@ -1,0 +1,226 @@
+<html>
+<head>
+<title>Computer Vision Project</title>
+<link href='http://fonts.googleapis.com/css?family=Nunito:300|Crimson+Text|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" title="Default" href="styles/github.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>  
+
+<link rel="stylesheet" href="highlighting/styles/default.css">
+<script src="highlighting/highlight.pack.js"></script>
+
+<style type="text/css">
+body {
+	margin: 0px;
+	width: 100%;
+	font-family: 'Crimson Text', serif;
+	font-size: 20px;
+	background: #fcfcfc;
+}
+h1 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 28px;
+	margin: 25px 0px 0px 0px;
+	text-transform: lowercase;
+
+}
+
+h2 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 32px;
+	margin: 15px 0px 35px 0px;
+	color: #333;	
+	word-spacing: 3px;
+}
+
+h3 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 26px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+h4 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 22px;
+	margin: 10px 0px 10px 0px;
+	color: #333;
+	word-spacing: 2px;
+}
+
+h5 {
+	font-family: 'Nunito', sans-serif;
+	font-weight: normal;
+	font-size: 18px;
+	margin: 10px 0px 10px 0px;
+	color: #111;
+	word-spacing: 2px;
+}
+
+p, li {
+	color: #444;
+}
+
+a {
+	color: #DE3737;
+}
+
+.container {
+	margin: 0px auto 0px auto;
+	width: 960px;
+}
+
+#header {
+	background: #333;
+	width: 100%;
+}
+
+#headersub {
+	color: #ccc;
+	width: 960px;
+	margin: 0px auto 0px auto;
+	padding: 20px 0px 20px 0px;
+}
+
+.chart {
+	width: 480px;
+}
+.lol {
+	font-size: 16px;
+	color: #888;
+	font-style: italic;
+}
+.sep {
+	height: 1px;
+	width: 100%;
+	background: #999;
+	margin: 20px 0px 20px 0px;
+}
+.footer{
+	font-size: 16px;
+}
+.latex {
+	width: 100%;
+}
+
+.latex img {
+	display: block;
+	margin: 0px auto 0px auto;
+}
+
+pre {
+	font-family: 'Droid Sans Mono';
+	font-size: 14px;
+}
+
+td img {
+  vertical-align: middle;
+}
+
+#contents a {
+}
+</style>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+</head>
+<body>
+<!-- Don't include your name or obviously identifiable information! We will practice anonymous TA grading. -->
+<div class="container">
+
+<h2>Project 1: Image Filtering and Hybrid Images</h2>
+
+<h2>Answered Questions</h2>
+<h4>
+1. Explicitly describe image filtering (the input, the transformation, and the output) and why it is useful for computer vision.
+</h4>
+<p>
+Image filtering is the convolution of an image and a filter. A color image is an array with 3 channels for colors red, blue, and green, and a grayscale image is an array with only one channel. The image may be viewed as the input signal in the convolution. A filter is also an array, which can be viewed as the impulse response in the convolution. The resulting array of the convolution is the filtered image.
+</p>
+<p>
+Image filtering is useful in computer vision because they can reveal or isolate information that is obscured or imperceptible in the input image. For example, edge detector filters may isolate boundaries in the image. Additionally, low pass filters isolate the majority of the color information in an input image.
+</p>
+
+<h4>
+2. What is the different between a high pass filter and a low pass filter in how they are constructed, and what they do to the image?
+</h4>
+<p>
+A low pass filter is constructed by selecting filter array entries that will in some way average the values of the neighboring pixels in the convolution. A low pass filter take an weighted or unweighted average of the neighboring pixels. A box filter outputs an unweighted average while a gaussian filter outputs a weighted average. Low pass filters blur its input image.
+</p>
+<p>
+A high pass filter is constructed by selecting filter array entries that will in some way increase the contrast between a pixel and its neighbors. A high pass filter will sharpen an image.
+</p>
+<h4>
+3. How does the Fourier transform relate to image filtering?
+</h4>
+<p>
+According to the Fourier transform, an image can be decomposed into sum of spatial waves of different amplitudes and frequencies. Image filtering may be understood as the manipulation of the frequencies or amplitudes of these waves. A low pass filter, for example, will eliminate or reduce the amplitude of the high frequency waves. A high pass filter may eliminate or reduce the amplitude of the low frequency waves. Moreover, the convolution of an image and a filter, may be viewed as the product of their respective Fourier transformations in the frequency domain.
+
+</p>
+
+
+<h2>Implementation</h2>
+
+
+<p>
+The algorithm for my_imfilter employs two functions: filter_pixel and pad_image. Pad image takes the input image and filter as arguments and returns the image padded with zeros. The padding function extracts the geometry of the image and filter and computes the boundaries needed to fully perform the convolution. The pad_image function uses the built-in MATLAB function padarray. The pad_image function works for both color and grayscale images.
+</p>
+
+<p>
+The filter_pixel function takes an index, a padded image, and a filter as arguments, and returns the value of the correlation at the given index. 
+</p>
+
+<p>
+The my_imfilter function first calls pad_image to pad the input image. The my_imfilter function then rotates the filter array by 180 degrees. The function then loops over every column, row, and color channel, computing the correlation of the input image and the rotated array. The output of this correlation is the convolution. The values of the convolution then populate a new array, which is the filtered image.
+</p>
+
+
+
+
+
+<h3>BikeBike, CatPug, and BirdPlane</h3>
+
+<table border=1>
+<tr>
+<td>
+<img src="bikebike_hybrid_image.jpg" width="24%"/>
+<img src="bikebike_low_frequencies.jpg"  width="24%"/>
+<img src="bikebike_high_frequencies.jpg" width="24%"/>
+<img src="bikebike_hybrid_image_scales.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="catdog_hybrid_image.jpg" width="24%"/>
+<img src="catdog_low_frequencies.jpg"  width="24%"/>
+<img src="catdog_high_frequencies.jpg" width="24%"/>
+<img src="catdog_hybrid_image_scales.jpg" width="24%"/>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="birdplane_hybrid_image.jpg" width="24%"/>
+<img src="birdplane_low_frequencies.jpg"  width="24%"/>
+<img src="birdplane_high_frequencies.jpg" width="24%"/>
+<img src="birdplane_hybrid_image_scales.jpg" width="24%"/>
+</td>
+</tr>
+
+</table>
+
+<div style="clear:both" >
+<h4> BikeBike </h4>
+<p> The first row shows a bicycle-motorcycle hybridization. The first image is the hybridized image. The second image shows the low frequency information of the bicycle. The low-passed image was obtained by convolution with a 21x21 Gaussian filter with a standard deviation of 5. The third image shows the high frequency information of the motorcycle. The high frequency information was obtained by subtracting a low-passed image from the input image. The low-passed image was obtained by convolution with another 21x21 Gaussian filter with a standard deviation of 5. The fourth image shows the downsampled hybrid image.</p>
+<h4> CatPug </h4>
+<p> The second row shows images of a cat and dog hybridization. The first image shows the hybridized form. The second image shows the low frequency information of the dog. The low frequency image was obtained by convolution with a 17x17 Gaussian filter with a standard deviation of 4. The third image shows the high frequency information of the cat. The high-frequency image was obtained, again, by subtracting a low-passed image from the input image. The low-passed image was obtained by convolution with a 29x29 Gaussian filter with a standard deviation of 7. The fourth photo shows the downsampled hybrid image. </p>
+<h4> BirdPlane </h4>
+<p> The third rows shows images of a bird and plane hybridization. The first image shows the complete hybridized image. The second image shows the low frequency information of the bird. This image encodes the almost all of the color seen in the hybridized form. The low-passed image was created by convolution with 21x21 Gaussian filter of standard deviation 5. The third image shows the high-frequency information of the plane. This image was obtained in the same method as the previous two high-pass images. The low-pass image was obtained by convolution with a 9x9 Gaussian filter with a standard deviation of 2. The fourth image shows the downsampled image.
+
+</div>
+</body>
+</html>
